@@ -1,0 +1,28 @@
+{
+	"name": "pygillier/chert",
+	"description": "A silex-based url-minifying app.",
+	"version": "0.1-dev",
+	"type" : "project",
+	"license" : "LGPL-2.1+",
+
+	"authors": [
+		{
+			"name" : "Pierre-Yves Gillier",
+			"email" : "pierre-yves@gillier.name",
+			"homepage" : "http://pierre-yves.gillier.name",
+			"role" : "Developer"
+		}
+	],
+	"support" : {
+		"issues" : "https://hg.gillier.name/chert/issues",
+		"source" : "https://hg.gillier.name/chert"
+	},
+
+    "require": {
+        "silex/silex": "1.*",
+        "symfony/yaml": "~2.3",
+        "symfony/validator": "~2.3",
+        "doctrine/dbal": "2.2.*",
+        "deralex/yaml-config-service-provider": "1.0.*@dev"
+    }
+}
