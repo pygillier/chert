@@ -1,0 +1,15 @@
+# Chert main configuration file
+#
+# Use spaces instead of tabs for indentation
+
+database:
+    driver: pdo_mysql
+    dbname: 
+    user: 
+    password:     
+    host: localhost    
+    port: 3306
+
+auto_redirect: false
+
+debug: true
