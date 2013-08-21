@@ -1,15 +1,28 @@
 # Chert main configuration file
 #
-# Use spaces instead of tabs for indentation
+# See readme.md for usage
 
+# Default SQLite database
 database:
-    driver: pdo_mysql
-    dbname: 
-    user: 
-    password:     
-    host: localhost    
-    port: 3306
+    driver:	pdo_sqlite
+    path: 	../chert.sqlite
 
-auto_redirect: false
+# Mysql example
+#database:
+#    driver:	pdo_mysql
+#    dbname:	chert
+#    user: 		username
+#    password: 	password    
+#    host: 		localhost    
+#    port: 		3306
 
-debug: true
+# If true, display a page with final link, user will have to click link.
+# Else a 301 redirect is silently done.
+auto_redirect:	false
+
+# Display /status page (version, db status)
+# Be careful as db type is displayed!
+show_status:	false
+
+# Enable silex debug mode.
+debug:			false

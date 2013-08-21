@@ -75,6 +75,11 @@ $app->post('/post', function(Request $request) use ($app){
  * Application status
  */
 $app->get('/status', function() use ($app){
+
+	// Status is available in debug mode only.
+	if(!$app['config']['show_status'])
+		throw new \Exception("Unauthorized access");
+
 	$output = sprintf("Chert / %s", APP_VERSION)."<br/>";
 
 	// DB access
@@ -83,7 +88,7 @@ $app->get('/status', function() use ($app){
 		$sql = "SELECT COUNT(*) AS TOTAL from url";
 		$result = $app['db']->fetchAssoc($sql);
 
-		$output .= sprintf("Database access OK: %s entries", $result['TOTAL']);
+		$output .= sprintf("Database (%s) access OK: %s entries", $app['db']->getDatabasePlatform()->getName(), $result['TOTAL']);
 	}
 	catch(\PDOException $err)
 	{
