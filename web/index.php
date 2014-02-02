@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
-define('APP_VERSION', '0.1-dev');
+define('APP_VERSION', '0.2');
 
 require_once __DIR__.'/../vendor/autoload.php';
 
