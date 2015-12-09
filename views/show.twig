@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{app_title}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
+    </head>
+    <body>
+        <nav class="nav" tabindex="-1" onclick="this.focus()">
+            <div class="container">
+                <a class="pagename current" href="{{ path('home') }}">{{app_title}}</a>
+            </div>
+        </nav>
+        <article class="row">
+            <div class="col c1">&nbsp;</div>
+            <div class="col c10">
+                <div class="msg">
+	                <strong>Note :</strong>
+	                Redirection is disabled. Your browser won't refresh itself.
+                </div>
+                <p>
+                    Here is you <abbr title="Uniform Resource Locator">URL</abbr> : <a href="{{link}}">{{link}}</a>
+                </p>
+            </div>
+        </article>
+    </body>
+</html>

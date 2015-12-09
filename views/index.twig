@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{app_title}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
+    </head>
+    <body>
+        <nav class="nav" tabindex="-1" onclick="this.focus()">
+            <div class="container">
+                <a class="pagename current" href="{{ path('home') }}">{{app_title}}</a>
+            </div>
+        </nav>
+        <article class="row">
+            <div class="col c1">&nbsp;</div>
+            <div class="col c11">
+                <form method="POST" action="{{path('send_url')}}">
+                    <label for="url">Please type an url to save :</label>
+                    <input type="url" required placeholder="http://..." name="url" id="url"/>
+                    <input type="submit" value="Minify" class="btn btn-sm btn-b smooth"/>
+                </form>
+            </div>
+        </article>
+    </body>
+</html>

@@ -1,0 +1,30 @@
+# Chert main configuration file
+#
+# See readme.md for usage
+
+name: My Chert instance
+
+# Default SQLite database
+database:
+    driver:	pdo_sqlite
+    path: 	%base_dir%/app/database/chert.sqlite
+
+# Mysql example
+#database:
+#    driver:	pdo_mysql
+#    dbname:	chert
+#    user: 		username
+#    password: 	password    
+#    host: 		localhost    
+#    port: 		3306
+
+# If true, display a page with final link, user will have to click link.
+# Else a 301 redirect is silently done.
+auto_redirect:	false
+
+# Display /status page (version, db status)
+# Be careful as db type is displayed!
+show_status:	true
+
+# Enable silex debug mode.
+debug:			true
