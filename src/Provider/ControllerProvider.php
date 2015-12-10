@@ -5,7 +5,6 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
-use pygillier\Chert\Service\HashService;
 
 class ControllerProvider implements ControllerProviderInterface
 {
