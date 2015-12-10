@@ -5,7 +5,6 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
-use pygillier\Chert\Service\HashService;
 
 class ControllerProvider implements ControllerProviderInterface
 {
@@ -48,7 +47,7 @@ class ControllerProvider implements ControllerProviderInterface
     	// Validate given URL
     	if( count($app['validator']->validateValue($url, new Assert\Url())) == 0)
 	    {
-		    $res = $app['db']->insert('url', array( 'url' => $url));
+		    $app['db']->insert('url', array( 'url' => $url));
 
 		    // Returns an url with given ID
 		    $id = $app['db']->lastInsertId();

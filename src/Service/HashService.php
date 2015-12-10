@@ -79,5 +79,4 @@ class HashService
         }
         return $res;
     }
-    
 }

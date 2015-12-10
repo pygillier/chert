@@ -32,7 +32,7 @@ class Application extends BaseApplication
         });
         
         // Debug providers
-        if($this['debug'] == true)
+        if($this['debug'] === true)
         {
             $this->register(new \Whoops\Provider\Silex\WhoopsServiceProvider());
         }

@@ -1,7 +1,6 @@
 {
 	"name": "pygillier/chert",
 	"description": "A silex-based url-minifying app.",
-	"version": "0.2",
 	"type" : "project",
 	"license" : "MIT",
 
