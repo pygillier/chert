@@ -39,5 +39,10 @@
 				"src/"
 			]
         }
-    }
+    },
+	"scripts": {
+		"post-root-package-install": [
+			"pygillier\\Chert\\Installer::configure"
+		]
+	}
 }
