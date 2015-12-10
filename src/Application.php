@@ -26,6 +26,11 @@ class Application extends BaseApplication
         
         $this->initProviders();
         
+        // Services
+        $this['hash_service'] = $this->share(function($this){
+           return new Service\HashService(); 
+        });
+        
         // Debug providers
         if($this['debug'] == true)
         {

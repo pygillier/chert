@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{app_title}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
+    </head>
+    <body>
+        <nav class="nav" tabindex="-1" onclick="this.focus()">
+            <div class="container">
+                <a class="pagename current" href="{{ path('home') }}">{{app_title}}</a>
+            </div>
+        </nav>
+        <article class="row">
+            <div class="col c1">&nbsp;</div>
+            <div class="col c10">
+                <div class="msg">
+	                <strong>Yeah !</strong><br/>
+	                Your link <em>{{link.url}}</em> has been to <a href="{{path('show', {'hash':hash})}}">{{url('show', {'hash' : hash})}}</a>.
+                </div>
+            </div>
+        </article>
+    </body>
+</html>
