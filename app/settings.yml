@@ -27,4 +27,4 @@ auto_redirect:	false
 show_status:	true
 
 # Enable silex debug mode.
-debug:			true
+debug:	true

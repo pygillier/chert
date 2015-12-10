@@ -17,11 +17,14 @@ class ControllerProvider implements ControllerProviderInterface
             ->get('/', "\\pygillier\\Chert\\Provider\\ControllerProvider::indexAction")
             ->bind('home');
         $controllers
-            ->post('/minify', "\\pygillier\\Chert\\Provider\\ControllerProvider::minifyAction")
+            ->post('/min', "\\pygillier\\Chert\\Provider\\ControllerProvider::minifyAction")
             ->bind('send_url');
         $controllers
-            ->get('/status', "\\pygillier\\Chert\\Provider\\ControllerProvider::statusAction")
+            ->get('/state', "\\pygillier\\Chert\\Provider\\ControllerProvider::statusAction")
             ->bind('status');
+		$controllers
+            ->get('/done/{hash}', "\\pygillier\\Chert\\Provider\\ControllerProvider::doneAction")
+            ->bind('done');
         $controllers
             ->get('/{hash}', "\\pygillier\\Chert\\Provider\\ControllerProvider::showAction")
             ->bind('show');
@@ -34,9 +37,7 @@ class ControllerProvider implements ControllerProviderInterface
      */
     public function indexAction(Application $app) 
     {
-        return $app['twig']->render('index.twig', array(
-            'name' => "Plop",
-        ));
+        return $app['twig']->render('index.twig');
     }
     
     public function minifyAction(Application $app, Request $request)
@@ -46,12 +47,13 @@ class ControllerProvider implements ControllerProviderInterface
     	// Validate given URL
     	if( count($app['validator']->validateValue($url, new Assert\Url())) == 0)
 	    {
-		    $res = $app['db']->insert('url', array( 'url' => $url));
+		    $app['db']->insert('url', array( 'url' => $url));
 
 		    // Returns an url with given ID
 		    $id = $app['db']->lastInsertId();
-		    $link = $app['url_generator']->generate('show', array('hash' => base_convert($id, 16, 36)), true);
-		    return "Minified url : <a href=\"${link}\">${link}</a>";
+		    
+			$hash = $app['hash_service']->getHash($id);
+			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));
 	    }
 	    else 
 		    throw new \Exception("Invalid URL provided: ${url}");
@@ -79,33 +81,41 @@ class ControllerProvider implements ControllerProviderInterface
         }
         return $output;
     }
+	
+	public function doneAction(Application $app, $hash)
+	{
+		$id = $app['hash_service']->getValue($hash);
+		
+		$sql = "SELECT * FROM url WHERE id = ?";
+		$link = $app['db']->fetchAssoc($sql, array($id));
+		
+		return $app['twig']->render('done.twig', array(
+			'link' => $link,
+			'hash' => $hash,
+		));
+	}
     
     public function showAction(Application $app, $hash)
     {
-        // Get real ID and validate it
-	$real_id = base_convert($hash, 36, 16);
 
-	if( !is_numeric($real_id))
-	{
-		throw new Exception("Invalid ID provided (not an int)");
-	}
-	
-	$sql = "SELECT * FROM url WHERE id = ?";
-	$link = $app['db']->fetchAssoc($sql, array( $real_id));
+		$id = $app['hash_service']->getValue($hash);
+		
+		$sql = "SELECT * FROM url WHERE id = ?";
+		$link = $app['db']->fetchAssoc($sql, array($id));
 
 	
-	if($link['url'])
-	{
-		if(true === $app['config']['auto_redirect'])
-			return $app->redirect($link['url']);
-		else
+		if($link['url'])
 		{
-            return $app['twig']->render('show.twig', array(
-                'link' => $link['url'],
-            ));
+			if(true === $app['config']['auto_redirect'])
+				return $app->redirect($link['url']);
+			else
+			{
+				return $app['twig']->render('show.twig', array(
+					'link' => $link['url'],
+				));
+			}
 		}
+		else
+			throw new \Exception("Unknown id provided");
 	}
-	else
-		throw new Exception("Unknown id provided");
-    }
 }

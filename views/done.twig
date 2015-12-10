@@ -14,12 +14,9 @@
             <div class="col c1">&nbsp;</div>
             <div class="col c10">
                 <div class="msg">
-	                <strong>Note :</strong>
-	                Redirection is disabled. Your browser won't refresh itself.
+	                <strong>Yeah !</strong><br/>
+	                Your link <em>{{link.url}}</em> has been minified to <a href="{{path('show', {'hash':hash})}}">{{url('show', {'hash' : hash})}}</a>.
                 </div>
-                <p>
-                    Here is you <abbr title="Uniform Resource Locator">URL</abbr> : <a href="{{link}}">{{link}}</a>
-                </p>
             </div>
         </article>
     </body>
