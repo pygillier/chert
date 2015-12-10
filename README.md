@@ -1,6 +1,8 @@
 # Chert URL minifier
  
 Chert is an URL minifier built using [Silex][1] micro-framework (so it's written in PHP)
+
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/9f580b96-d77a-4b78-b94f-254ad13cebaf/mini.png)](https://insight.sensiolabs.com/projects/9f580b96-d77a-4b78-b94f-254ad13cebaf)
  
 ## Requirements
 To install and run Chert, you'll need the following components:
