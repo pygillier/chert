@@ -5,3 +5,4 @@ vendor
 puphpet
 Vagrantfile
 .vagrant/
+app/cache/

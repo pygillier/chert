@@ -47,11 +47,8 @@ class ControllerProvider implements ControllerProviderInterface
     	// Validate given URL
     	if( count($app['validator']->validateValue($url, new Assert\Url())) == 0)
 	    {
-		    $app['db']->insert('url', array( 'url' => $url));
 
-		    // Returns an url with given ID
-		    $id = $app['db']->lastInsertId();
-		    
+		    $id = $app['db_service'];
 			$hash = $app['hash_service']->getHash($id);
 			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));
 	    }

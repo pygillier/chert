@@ -16,7 +16,6 @@
 		"issues" : "https://hg.gillier.name/chert/issues",
 		"source" : "https://hg.gillier.name/chert"
 	},
-	"minimum-stability": "dev",
     "require": {
         "silex/silex": "1.*",
         "symfony/yaml": "~2.3",

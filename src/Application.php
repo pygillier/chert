@@ -30,6 +30,10 @@ class Application extends BaseApplication
         $this['hash_service'] = $this->share(function($this){
            return new Service\HashService(); 
         });
+
+        $this['db_service'] = $this->share(function($this){
+            return new Service\DatabaseService($this['db']);
+        });
         
         // Debug providers
         if($this['debug'] === true)
