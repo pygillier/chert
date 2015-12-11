@@ -1,7 +1,6 @@
 {
 	"name": "pygillier/chert",
 	"description": "A silex-based url-minifying app.",
-	"version": "0.2",
 	"type" : "project",
 	"license" : "MIT",
 
@@ -17,12 +16,32 @@
 		"issues" : "https://hg.gillier.name/chert/issues",
 		"source" : "https://hg.gillier.name/chert"
 	},
-
     "require": {
         "silex/silex": "1.*",
         "symfony/yaml": "~2.3",
         "symfony/validator": "~2.3",
         "doctrine/dbal": "2.2.*",
-        "deralex/yaml-config-service-provider": "1.0.*@dev"
-    }
+		"igorw/config-service-provider": "^1.2",
+		"twig/twig": "^1.23",
+		"symfony/twig-bridge": "^3.0",
+		"symfony/form": "^3.0",
+		"symfony/security-csrf": "^3.0",
+		"silex/web-profiler": "^1.0"
+    },
+	"require-dev": {
+		"filp/whoops": "1.1.*"
+	},
+	"autoload": {
+        "psr-4": {
+            "pygillier\\Chert\\": [
+				"",
+				"src/"
+			]
+        }
+    },
+	"scripts": {
+		"post-root-package-install": [
+            "php -r \"copy('app/settings.yml-dist', 'app/settings.yml');\""
+        ]
+	}
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{app.config.name}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
+        <style type="text/css">
+            dl {
+                background-color:#D9DADB;
+                margin: .2em; padding: 0.2em;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="nav" tabindex="-1" onclick="this.focus()">
+            <div class="container">
+                <a class="pagename current" href="{{ path('home') }}">{{app.config.name}} <small>status</small></a>
+            </div>
+        </nav>
+        <article class="row">
+            <div class="col c1">&nbsp;</div>
+            <div class="col c10">
+                <div class="msg">
+	                {{count}} links stored in application.
+                </div>
+                <div class="row">
+                    {% for link in links %}
+                    <div class="col c3">
+                        <dl>
+                            <dt>Source</dt>
+                            <dd><a href="{{link.url}}">{{link.url}}</a></dd>
+                            <dt>Short link</dt>
+                            <dd><a href="{{url('show', {'hash' : link.hash})}}">{{link.hash}}</a></dd>
+                        </dl>
+                    </div>
+                    {% endfor %}    
+                </div>
+            </div>
+        </article>
+    </body>
+</html>

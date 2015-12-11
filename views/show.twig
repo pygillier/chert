@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{app.config.name}}</title>
+        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
+		{% if app.config.auto_redirect %}
+		<meta http-equiv="refresh" content="{{app.config.auto_redirect.timer|default(10)}}; url={{link}}">
+		{% endif %}
+    </head>
+    <body>
+        <nav class="nav" tabindex="-1" onclick="this.focus()">
+            <div class="container">
+                <a class="pagename current" href="{{ path('home') }}">{{app.config.name}}</a>
+            </div>
+        </nav>
+        <article class="row">
+            <div class="col c1">&nbsp;</div>
+            <div class="col c10">
+				{% if app.config.auto_redirect %}
+                <div class="msg">
+	                <strong>Note :</strong>
+	                Your browser will redirect itself to the link after {{app.config.auto_redirect.timer|default(10)}} seconds.
+                </div>
+				{% endif %}
+                <p>
+                    Here is you <abbr title="Uniform Resource Locator">URL</abbr> : <a href="{{link}}">{{link}}</a>.
+                </p>
+            </div>
+        </article>
+    </body>
+</html>

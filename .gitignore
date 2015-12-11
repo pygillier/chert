@@ -1,0 +1,9 @@
+composer.lock
+composer.phar
+phpunit.xml
+vendor
+puphpet
+Vagrantfile
+.vagrant/
+app/cache/
+app/settings.yml
