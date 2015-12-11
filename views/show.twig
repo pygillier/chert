@@ -3,6 +3,9 @@
     <head>
         <title>{{app_title}}</title>
         <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
+		{% if app.config.auto_redirect %}
+		<meta http-equiv="refresh" content="{{app.config.auto_redirect.timer|default(10)}}; url={{link}}">
+		{% endif %}
     </head>
     <body>
         <nav class="nav" tabindex="-1" onclick="this.focus()">
@@ -13,12 +16,14 @@
         <article class="row">
             <div class="col c1">&nbsp;</div>
             <div class="col c10">
+				{% if app.config.auto_redirect %}
                 <div class="msg">
 	                <strong>Note :</strong>
-	                Redirection is disabled. Your browser won't refresh itself.
+	                Your browser will redirect itself to the link after {{app.config.auto_redirect.timer|default(10)}} seconds.
                 </div>
+				{% endif %}
                 <p>
-                    Here is you <abbr title="Uniform Resource Locator">URL</abbr> : <a href="{{link}}">{{link}}</a>
+                    Here is you <abbr title="Uniform Resource Locator">URL</abbr> : <a href="{{link}}">{{link}}</a>.
                 </p>
             </div>
         </article>

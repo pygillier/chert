@@ -48,8 +48,7 @@ class ControllerProvider implements ControllerProviderInterface
     	if( count($app['validator']->validateValue($url, new Assert\Url())) == 0)
 	    {
 
-		    $id = $app['db_service'];
-			$hash = $app['hash_service']->getHash($id);
+		    $hash = $app['chert']->minify($url);
 			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));
 	    }
 	    else 
@@ -81,10 +80,7 @@ class ControllerProvider implements ControllerProviderInterface
 	
 	public function doneAction(Application $app, $hash)
 	{
-		$id = $app['hash_service']->getValue($hash);
-		
-		$sql = "SELECT * FROM url WHERE id = ?";
-		$link = $app['db']->fetchAssoc($sql, array($id));
+		$link = $app['chert']->expand($hash);
 		
 		return $app['twig']->render('done.twig', array(
 			'link' => $link,
@@ -94,13 +90,9 @@ class ControllerProvider implements ControllerProviderInterface
     
     public function showAction(Application $app, $hash)
     {
+		// Get the original link
+		$link = $app['chert']->expand($hash);
 
-		$id = $app['hash_service']->getValue($hash);
-		
-		$sql = "SELECT * FROM url WHERE id = ?";
-		$link = $app['db']->fetchAssoc($sql, array($id));
-
-	
 		if($link['url'])
 		{
 			if(true === $app['config']['auto_redirect'])

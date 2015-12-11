@@ -31,8 +31,8 @@ class Application extends BaseApplication
            return new Service\HashService(); 
         });
 
-        $this['db_service'] = $this->share(function($this){
-            return new Service\DatabaseService($this['db']);
+        $this['chert'] = $this->share(function($this){
+            return new Service\ChertMinifyService($this['db'], $this['hash_service']);
         });
         
         // Debug providers
