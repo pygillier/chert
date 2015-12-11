@@ -2,12 +2,17 @@
 #
 # See readme.md for usage
 
+name: My Chert instance
+
 # Default SQLite database
 database:
     driver:	pdo_sqlite
-    path: 	../chert.sqlite
+    path: 	%base_dir%/app/chert.db
 
 # Mysql example
+# After database creation, execute script located in app/mysql/setup.sql
+# to setup tables
+
 #database:
 #    driver:	pdo_mysql
 #    dbname:	chert
@@ -20,9 +25,13 @@ database:
 # Else a 301 redirect is silently done.
 auto_redirect:	false
 
-# Display /status page (version, db status)
+# Display /state page (version, db status)
 # Be careful as db type is displayed!
-show_status:	false
+show_status:	true
+
+# Use simple alphabet for hashes
+# Letters "Il10O" and some others won't be used
+use_simple_cipher : false
 
 # Enable silex debug mode.
-debug:			false
+debug:	true

@@ -6,3 +6,4 @@ puphpet
 Vagrantfile
 .vagrant/
 app/cache/
+app/settings.yml

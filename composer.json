@@ -41,7 +41,7 @@
     },
 	"scripts": {
 		"post-root-package-install": [
-			"pygillier\\Chert\\Installer::configure"
-		]
+            "php -r \"copy('app/settings.yml-dist', 'app/settings.yml');\""
+        ]
 	}
 }
