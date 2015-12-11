@@ -33,5 +33,5 @@ show_status:	true
 # Letters "Il10O" and some others won't be used
 use_simple_cipher : false
 
-# Enable silex debug mode.
-debug:	true
+# Enable debug mode.
+debug:	false

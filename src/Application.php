@@ -13,7 +13,9 @@ class Application extends BaseApplication
         parent::__construct();
         
         // Load configuration
-        $this->register(new \Igorw\Silex\ConfigServiceProvider(
+        try 
+        {
+            $this->register(new \Igorw\Silex\ConfigServiceProvider(
                         __DIR__.'/../app/settings.yml',
                         array(
                             'base_dir' => realpath(__DIR__.'/../')
@@ -21,6 +23,13 @@ class Application extends BaseApplication
                         new \Igorw\Silex\YamlConfigDriver(),
                         'config'
             ));
+        }
+        catch(\InvalidArgumentException $e)
+        {
+            echo "Configuration file app/settings.yml is not available and/or readable.";
+            die();
+        }
+        
         
         $this['debug'] = $this['config']['debug'];
         
