@@ -1,6 +1,6 @@
 {
 	"name": "pygillier/chert",
-	"description": "A silex-based url-minifying app.",
+	"description": "An URL minifier in 5 minutes.",
 	"type" : "project",
 	"license" : "MIT",
 
@@ -8,13 +8,13 @@
 		{
 			"name" : "Pierre-Yves Gillier",
 			"email" : "pierre-yves@gillier.name",
-			"homepage" : "http://pierre-yves.gillier.name",
+			"homepage" : "https://pygillier.me",
 			"role" : "Developer"
 		}
 	],
 	"support" : {
-		"issues" : "https://hg.gillier.name/chert/issues",
-		"source" : "https://hg.gillier.name/chert"
+		"issues" : "https://github.com/pygillier/chert/issues",
+		"source" : "https://github.com/pygillier/chert"
 	},
     "require": {
         "silex/silex": "1.*",
