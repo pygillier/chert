@@ -25,9 +25,11 @@ database:
 # Else a 301 redirect is silently done.
 auto_redirect:	false
 
-# Display /state page (version, db status)
+# Display status page (version, db status)
+# 
 # Be careful as db type is displayed!
-show_status:	true
+show_status:	false
+status_key :    chertstatuskey
 
 # Use simple alphabet for hashes
 # Letters "Il10O" and some others won't be used

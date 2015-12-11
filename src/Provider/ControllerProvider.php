@@ -20,7 +20,7 @@ class ControllerProvider implements ControllerProviderInterface
             ->post('/min', "\\pygillier\\Chert\\Provider\\ControllerProvider::minifyAction")
             ->bind('send_url');
         $controllers
-            ->get('/state', "\\pygillier\\Chert\\Provider\\ControllerProvider::statusAction")
+            ->get('/status/{key}', "\\pygillier\\Chert\\Provider\\ControllerProvider::statusAction")
             ->bind('status');
 		$controllers
             ->get('/done/{hash}', "\\pygillier\\Chert\\Provider\\ControllerProvider::doneAction")
@@ -55,27 +55,29 @@ class ControllerProvider implements ControllerProviderInterface
 		    throw new \Exception("Invalid URL provided: ${url}");
     }
     
-    public function statusAction(Application $app)
+    public function statusAction(Application $app, $key)
     {
         // Status is available in debug mode only.
-        if(!$app['config']['show_status'])
+        if(!$app['config']['show_status'] || $key != $app['config']['status_key'])
             throw new \Exception("Unauthorized access");
 
-        $output = sprintf("Chert / %s", APP_VERSION)."<br/>";
+		
 
         // DB access
         try
         {
-            $sql = "SELECT COUNT(*) AS TOTAL from url";
-            $result = $app['db']->fetchAssoc($sql);
+            $count = $app['chert']->countLinks();
 
-            $output .= sprintf("Database (%s) access OK: %s entries", $app['db']->getDatabasePlatform()->getName(), $result['TOTAL']);
+            $output = sprintf("Database (%s) access OK: %s entries", $app['db']->getDatabasePlatform()->getName(), $count);
         }
         catch(\PDOException $err)
         {
             $output .= '<span style="color: red; font-weight: bold">Database error !</span> '.$err->getMessage();
         }
-        return $output;
+		return $app['twig']->render('status.twig', array(
+			'count' => $count,
+			'links' => $app['chert']->getAll(true),
+		));
     }
 	
 	public function doneAction(Application $app, $hash)

@@ -36,4 +36,28 @@ class ChertMinifyService
         
         return $link;
     }
+	
+	public function getAll($with_hashes = false)
+	{
+		$sql = "SELECT * from url";
+		$links = $this->cnx->fetchAll($sql);
+		
+		if($with_hashes === true)
+		{
+			return array_map(function($item){
+				$item['hash'] = $this->hash_service->getHash($item['id']);
+				return $item;
+			}, $links);
+		}
+		
+		return $links;
+	}
+	
+	public function countLinks()
+	{
+		$sql = "SELECT COUNT(*) AS TOTAL from url";
+		$result = $this->cnx->fetchAssoc($sql);
+		
+		return $result['TOTAL'];
+	}
 }

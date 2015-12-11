@@ -36,7 +36,7 @@ class Application extends BaseApplication
         
         // Services
         $this['hash_service'] = $this->share(function($this){
-           return new Service\HashService($this['config']['use_simple_alphabet']); 
+           return new Service\HashService($this['config']['use_simple_cipher']); 
         });
 
         $this['chert'] = $this->share(function($this){
@@ -60,7 +60,7 @@ class Application extends BaseApplication
                                 $message = 'The requested page could not be found.';
                                 break;
                                 default:
-                                $message = 'We are sorry, but something went terribly wrong. ';
+                                $message = 'An error occured.';
                         }
                         return new \Symfony\Component\HttpFoundation\Response($message);
                     });
