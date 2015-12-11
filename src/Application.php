@@ -11,7 +11,7 @@ class Application extends BaseApplication
     {
         // super()
         parent::__construct();
-        
+
         // Load configuration
         try 
         {
@@ -26,8 +26,7 @@ class Application extends BaseApplication
         }
         catch(\InvalidArgumentException $e)
         {
-            echo "Configuration file app/settings.yml is not available and/or readable.";
-            die();
+            throw new \Exception("Configuration file app/settings.yml is not available and/or readable.");
         }
         
         
