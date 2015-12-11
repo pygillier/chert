@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{app_title}}</title>
+        <title>{{app.config.name}}</title>
         <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
     </head>
     <body>
         <nav class="nav" tabindex="-1" onclick="this.focus()">
             <div class="container">
-                <a class="pagename current" href="{{ path('home') }}">{{app_title}}</a>
+                <a class="pagename current" href="{{ path('home') }}">{{app.config.name}}</a>
             </div>
         </nav>
         <article class="row">

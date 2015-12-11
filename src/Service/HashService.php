@@ -9,12 +9,9 @@ class HashService
     
     private $base;
     
-    public function __construct($base="ALNUM")
+    public function __construct($use_simple_alphabet=false)
     {
-        if(empty(constant('self::'.$base)))
-            throw new \Exception("Unknown base given ${base}");
-        
-        $this->base = constant('self::'.$base);
+        $this->base = ($use_simple_alphabet) ? self::ALNUM_ALT:self::ALNUM;
     }
     
     public function getHash($value)

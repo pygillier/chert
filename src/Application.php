@@ -28,7 +28,7 @@ class Application extends BaseApplication
         
         // Services
         $this['hash_service'] = $this->share(function($this){
-           return new Service\HashService(); 
+           return new Service\HashService($this['config']['use_simple_alphabet']); 
         });
 
         $this['chert'] = $this->share(function($this){
@@ -72,8 +72,5 @@ class Application extends BaseApplication
                 'cache' => __DIR__ . '/../app/cache',
             ),
         ));
-        
-        // Global variables
-        $this['twig']->addGlobal("app_title", $this['config']['name']);
     }
 }
