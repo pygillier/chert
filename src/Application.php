@@ -51,6 +51,7 @@ class Application extends BaseApplication
         
         // Controllers
         $this->mount("/", new Provider\ControllerProvider());
+        $this->mount("/v1", new Provider\ApiProvider());
         
         // Error handler
         $this->error(function (\Exception $e, $code) 

@@ -2,6 +2,8 @@
 
 namespace pygillier\Chert\Service;
 
+use pygillier\Chert\Exception;
+
 class ChertMinifyService
 {
     private $cnx;
@@ -33,6 +35,11 @@ class ChertMinifyService
 		
 		$sql = "SELECT * FROM url WHERE id = ?";
 		$link = $this->cnx->fetchAssoc($sql, array($id));
+
+		if(false === $link)
+		{
+			throw new Exception("No URL found for hash : ${hash}");
+		}
         
         return $link;
     }

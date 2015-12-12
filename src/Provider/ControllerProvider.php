@@ -29,7 +29,7 @@ class ControllerProvider implements ControllerProviderInterface
             ->get('/{hash}', "\\pygillier\\Chert\\Provider\\ControllerProvider::showAction")
             ->bind('show');
 
-        return $controllers;
+		return $controllers;
     }
     
     /** 
@@ -72,7 +72,7 @@ class ControllerProvider implements ControllerProviderInterface
         }
         catch(\PDOException $err)
         {
-            $output .= '<span style="color: red; font-weight: bold">Database error !</span> '.$err->getMessage();
+            $output = '<span style="color: red; font-weight: bold">Database error !</span> '.$err->getMessage();
         }
 		return $app['twig']->render('status.twig', array(
 			'count' => $count,
