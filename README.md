@@ -16,7 +16,7 @@ Using CLI, type the following :
     $ composer install pygillier/chert
 
 ## Configuration
-Installation process will create the file `app/settings.yml`. You need to rename it to `settings.yml` and ensure that SQLite database `chert.sqlite` is writable to have a running Chert instance.
+Installation process will create the file `app/settings.yml`. This default setup uses a SQLite database located at `app/chert.db`. If you encounter SQLite error, please make sure the file and the containing directory are writable by the webserver.
 
 ### Alternate database (MySQL, PGSQL, ...)
 
