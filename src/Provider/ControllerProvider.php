@@ -1,6 +1,7 @@
 <?php
 namespace pygillier\Chert\Provider;
 
+use pygillier\Chert\Exception;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,7 +73,7 @@ class ControllerProvider implements ControllerProviderInterface
         }
         catch(\PDOException $err)
         {
-            $output = '<span style="color: red; font-weight: bold">Database error !</span> '.$err->getMessage();
+            throw new Exception("An error occured during processing. ");
         }
 		return $app['twig']->render('status.twig', array(
 			'count' => $count,
