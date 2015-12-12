@@ -3,20 +3,42 @@
     <head>
         <title>{{app.config.name}}</title>
         <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css" />
+        <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.min.css" />
+        <![endif]-->
+        <style type="text/css">
+            form {
+                text-align: center;
+                padding-top:4em;;
+            }
+            input#url {
+                width: 100%;
+            }
+            label {
+                display: none;
+                visibility: hidden;
+            }
+        </style>
     </head>
     <body>
+        <div class="github-fork-ribbon-wrapper right">
+            <div class="github-fork-ribbon">
+                <a href="https://github.com/pygillier/chert">Fork me on GitHub</a>
+            </div>
+        </div>
         <nav class="nav" tabindex="-1" onclick="this.focus()">
             <div class="container">
                 <a class="pagename current" href="{{ path('home') }}">{{app.config.name}}</a>
             </div>
         </nav>
         <article class="row">
-            <div class="col c1">&nbsp;</div>
-            <div class="col c11">
+            <div class="col c2">&nbsp;</div>
+            <div class="col c8">
                 <form method="POST" action="{{path('send_url')}}">
                     <label for="url">Please type an url to save :</label>
-                    <input type="url" required placeholder="http://..." name="url" id="url"/>
-                    <input type="submit" value="Minify" class="btn btn-sm btn-b smooth"/>
+                    <input type="url" required placeholder="http://www.mylongaddress.com" name="url" id="url"/>
+                    <input type="submit" value="Minify !" class="btn btn-b smooth"/>
                 </form>
             </div>
         </article>
