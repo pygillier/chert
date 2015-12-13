@@ -3,13 +3,20 @@
 namespace pygillier\Chert\Service;
 
 use pygillier\Chert\Exception;
+use Doctrine\DBAL\Connection;
 
 class ChertMinifyService
 {
-    private $cnx;
-    private $hash_service;
+	/**
+	 * @var \Doctrine\DBAL\Connection
+     */
+	private $cnx;
+	/**
+	 * @var HashService
+     */
+	private $hash_service;
     
-    public function __construct(\Doctrine\DBAL\Connection $cnx, HashService $hash_service)
+    public function __construct(Connection $cnx, HashService $hash_service)
     {
         $this->cnx= $cnx;
         $this->hash_service = $hash_service;
@@ -20,6 +27,9 @@ class ChertMinifyService
      *
      * @param string $link The link to save
      * @return string Link's associated hash
+	 *
+	 * TODO : Refactor for parameter sanitization
+	 * TODO : Refactor for Assertion of correct URL
      */
     public function minify($link)
     {
@@ -28,13 +38,26 @@ class ChertMinifyService
         
         return $this->hash_service->getHash($id);
     }
-    
-    public function expand($hash)
+
+	/**
+     * Returns a record from its hash
+     *
+	 * @param string $hash The hash to lookup
+	 * @return array The record from database
+	 * @throws \pygillier\Chert\Exception if no record was found.
+     */
+	public function expand($hash)
     {
         $id = $this->hash_service->getValue($hash);
-		
-		$sql = "SELECT * FROM url WHERE id = ?";
-		$link = $this->cnx->fetchAssoc($sql, array($id));
+
+        $qb = $this->cnx->createQueryBuilder()
+            ->select('u.id','u.url', 'u.created_at')
+            ->from("url", "u")
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ;
+
+		$link = $qb->execute()->fetch(\PDO::FETCH_ASSOC);
 
 		if(false === $link)
 		{
@@ -49,14 +72,6 @@ class ChertMinifyService
 		$sql = "SELECT * from url";
 		$links = $this->cnx->fetchAll($sql);
 		
-		if($with_hashes === true)
-		{
-			return array_map(function($item){
-				$item['hash'] = $this->hash_service->getHash($item['id']);
-				return $item;
-			}, $links);
-		}
-
 		return $links;
 	}
 
