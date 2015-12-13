@@ -47,6 +47,7 @@ class Application extends BaseApplication
         if($this['debug'] === true)
         {
             $this->register(new \Whoops\Provider\Silex\WhoopsServiceProvider());
+            $this->register(new \Sorien\Provider\PimpleDumpProvider());
         }
         
         // Controllers

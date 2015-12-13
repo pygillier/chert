@@ -56,29 +56,33 @@ class ControllerProvider implements ControllerProviderInterface
 		    throw new \Exception("Invalid URL provided: ${url}");
     }
     
-    public function statusAction(Application $app, $key)
+    public function statusAction(Application $app, Request $request, $key)
     {
         // Status is available in debug mode only.
         if(!$app['config']['show_status'] || $key != $app['config']['status_key'])
             throw new \Exception("Unauthorized access");
 
-		
-
+        $offset = $request->get('page', 0);
+        $limit = $app['config']['status_links_per_page'];
         // DB access
         try
         {
-            $count = $app['chert']->countLinks();
+			$links = $app['chert']->getListing($offset, $limit);
+			$links = array_map(function($item) use ($app) {
+				$item['hash'] = $app['hash_service']->getHash($item['id']);
+				return $item;
+			}, $links);
 
-            $output = sprintf("Database (%s) access OK: %s entries", $app['db']->getDatabasePlatform()->getName(), $count);
+			return $app['twig']->render('status.twig', array(
+				'count' => $app['chert']->countLinks(),
+				'links' => $links,
+			));
         }
         catch(\PDOException $err)
         {
-            throw new Exception("An error occured during processing. ");
+            throw new Exception("An error occured during processing.".$err->getMessage());
         }
-		return $app['twig']->render('status.twig', array(
-			'count' => $count,
-			'links' => $app['chert']->getAll(true),
-		));
+
     }
 	
 	public function doneAction(Application $app, $hash)

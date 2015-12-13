@@ -7,3 +7,4 @@ Vagrantfile
 .vagrant/
 app/cache/
 app/settings.yml
+pimple.json

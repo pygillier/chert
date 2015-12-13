@@ -44,7 +44,7 @@ class ChertMinifyService
         return $link;
     }
 	
-	public function getAll($with_hashes = false)
+	public function getAll()
 	{
 		$sql = "SELECT * from url";
 		$links = $this->cnx->fetchAll($sql);
@@ -56,8 +56,21 @@ class ChertMinifyService
 				return $item;
 			}, $links);
 		}
-		
+
 		return $links;
+	}
+
+	public function getListing($offset, $limit)
+	{
+		$queryBuilder = $this->cnx->createQueryBuilder();
+
+		$queryBuilder
+			->select('*')
+			->from("url", "u")
+			->setFirstResult($limit * $offset)
+			->setMaxResults($limit);
+
+		return $queryBuilder->execute()->fetchAll();
 	}
 	
 	public function countLinks()
