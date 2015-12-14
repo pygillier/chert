@@ -41,7 +41,7 @@
                         <tr>
                             <td class="truncate"><a href="{{link.url}}">{{link.url}}</a></td>
                             <td>{{ link.created_at|date }}</td>
-                            <td><a href="{{url('show', {'hash' : link.hash})}}">{{url('show', {'hash' : link.hash})}}</a></td>
+                            <td class="truncate"><a href="{{url('show', {'hash' : link.hash})}}">{{url('show', {'hash' : link.hash})}}</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
