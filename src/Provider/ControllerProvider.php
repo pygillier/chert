@@ -58,9 +58,13 @@ class ControllerProvider implements ControllerProviderInterface
     
     public function statusAction(Application $app, Request $request, $key)
     {
-        // Status is available in debug mode only.
+		// Status is available in debug mode only.
         if(!$app['config']['show_status'] || $key != $app['config']['status_key'])
-            throw new \Exception("Unauthorized access");
+		{
+			$app['monolog']->addAlert("Unauthorized access to status page");
+			throw new Exception("Unauthorized access to status page");
+		}
+            
 
         $offset = $request->get('page', 0);
         $limit = $app['config']['status_links_per_page'];
@@ -68,6 +72,8 @@ class ControllerProvider implements ControllerProviderInterface
         try
         {
 			$links = $app['chert']->getListing($offset, $limit);
+			
+			// Add hashes to liste
 			$links = array_map(function($item) use ($app) {
 				$item['hash'] = $app['hash_service']->getHash($item['id']);
 				return $item;
@@ -80,6 +86,7 @@ class ControllerProvider implements ControllerProviderInterface
         }
         catch(\PDOException $err)
         {
+			$app['monolog']->addError("Error while retrieving listing (offset: ${offset}, limit: ${limit}) :".$err->getMessage());
             throw new Exception("An error occured during processing.".$err->getMessage());
         }
 

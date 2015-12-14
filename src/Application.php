@@ -82,5 +82,10 @@ class Application extends BaseApplication
                 'cache' => __DIR__ . '/../app/cache',
             ),
         ));
+        $this->register(new \Silex\Provider\MonologServiceProvider(), array(
+            'monolog.logfile'   => __DIR__.'/../app/logs/service.log',
+            'monolog.level'     => \Monolog\Logger::INFO,
+            'monolog.name'      => 'chert'
+        ));
     }
 }

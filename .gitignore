@@ -8,3 +8,4 @@ Vagrantfile
 app/cache/
 app/settings.yml
 pimple.json
+app/logs/*.log
