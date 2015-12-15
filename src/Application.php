@@ -34,15 +34,6 @@ class Application extends BaseApplication
         
         $this->initProviders();
         
-        // Services
-        $this['hash_service'] = $this->share(function($this){
-           return new Service\HashService($this['config']['use_simple_cipher']); 
-        });
-
-        $this['chert'] = $this->share(function($this){
-            return new Service\ChertMinifyService($this['db'], $this['hash_service']);
-        });
-        
         // Debug providers
         if($this['debug'] === true)
         {
@@ -87,5 +78,14 @@ class Application extends BaseApplication
             'monolog.level'     => \Monolog\Logger::INFO,
             'monolog.name'      => 'chert'
         ));
+        
+        // Services
+        $this['hash_service'] = $this->share(function($this){
+           return new Service\HashService($this['config']['use_simple_cipher']); 
+        });
+
+        $this['chert'] = $this->share(function($this){
+            return new Service\ChertMinifyService($this['db'], $this['hash_service'], $this['validator']);
+        });
     }
 }

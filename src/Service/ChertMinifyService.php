@@ -4,6 +4,7 @@ namespace pygillier\Chert\Service;
 
 use pygillier\Chert\Exception;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ChertMinifyService
 {
@@ -11,15 +12,19 @@ class ChertMinifyService
 	 * @var \Doctrine\DBAL\Connection
      */
 	private $cnx;
+	
 	/**
 	 * @var HashService
      */
 	private $hash_service;
+	
+	private $validator_service;
     
-    public function __construct(Connection $cnx, HashService $hash_service)
+    public function __construct(Connection $cnx, HashService $hash_service, $validator_service)
     {
         $this->cnx= $cnx;
         $this->hash_service = $hash_service;
+		$this->validator_service = $validator_service;
     }
     
     /**
@@ -27,16 +32,24 @@ class ChertMinifyService
      *
      * @param string $link The link to save
      * @return string Link's associated hash
-	 *
-	 * TODO : Refactor for parameter sanitization
-	 * TODO : Refactor for Assertion of correct URL
      */
     public function minify($link)
     {
-        $this->cnx->insert('url', array( 'url' => $link));
-        $id = $this->cnx->lastInsertId();
+		// Validation 
+		$errors = $this->validator_service->validateValue($link, new Assert\Url());
+		
+		if(count($errors) == 0)
+		{
+			$this->cnx->insert('url', array( 'url' => $link));
+        	$id = $this->cnx->lastInsertId();
         
-        return $this->hash_service->getHash($id);
+        	return $this->hash_service->getHash($id);	
+		}
+		else
+		{
+			throw new Exception("Given link is invalid".(string) $errors);
+		}
+        
     }
 
 	/**
@@ -73,7 +86,7 @@ class ChertMinifyService
 			->select('u.id, u.url, u.created_at')
 			->from('url', 'u')
 		;
-		$links = $qb->execute()->fetchAll($sql);
+		$links = $qb->execute()->fetchAll();
 		
 		return $links;
 	}

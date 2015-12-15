@@ -45,15 +45,15 @@ class ControllerProvider implements ControllerProviderInterface
     {
 	    $url = $request->get('url');
 
-    	// Validate given URL
-    	if( count($app['validator']->validateValue($url, new Assert\Url())) == 0)
-	    {
-
-		    $hash = $app['chert']->minify($url);
-			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));
-	    }
-	    else 
-		    throw new \Exception("Invalid URL provided: ${url}");
+    	try {
+			$hash = $app['chert']->minify($url);
+			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));	
+		}
+    	catch(Exception $e)
+		{
+			$app['session']->getFlashBag()->add("Provided link is invalid");
+			return $app->redirect($app["url_generator"]->generate("home"));
+		}
     }
     
     public function statusAction(Application $app, Request $request, $key)
