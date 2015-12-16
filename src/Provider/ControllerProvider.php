@@ -56,8 +56,15 @@ class ControllerProvider implements ControllerProviderInterface
 		if($form->isValid())
 		{
 			$data = $form->getData();
-			$hash = $app['chert']->minify($data['url']);
-			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));	
+			try
+			{
+				$hash = $app['chert']->minify($data['url']);
+				return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));
+			}
+			catch(\PDOException $pdoe)
+			{
+				throw new Exception("An error occured while saving. Please try again later.");
+			}
 		}
 		else
 		{
@@ -72,7 +79,7 @@ class ControllerProvider implements ControllerProviderInterface
         if(!$app['config']['show_status'] || $key != $app['config']['status_key'])
 		{
 			$app['monolog']->addAlert("Unauthorized access to status page");
-			throw new Exception("Unauthorized access to status page");
+			throw new Exception("Nothing to see here.");
 		}
             
 
@@ -97,7 +104,7 @@ class ControllerProvider implements ControllerProviderInterface
         catch(\PDOException $err)
         {
 			$app['monolog']->addError("Error while retrieving listing (offset: ${offset}, limit: ${limit}) :".$err->getMessage());
-            throw new Exception("An error occured during processing.".$err->getMessage());
+            throw new Exception("An error occured while processing the list.");
         }
 
     }

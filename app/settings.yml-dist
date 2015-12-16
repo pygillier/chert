@@ -36,5 +36,6 @@ status_links_per_page: 10
 # Letters "Il10O" and some others won't be used
 use_simple_cipher : false
 
-# Enable debug mode.
+# Debug options
 debug:	false
+twig_cache: true

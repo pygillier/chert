@@ -1,32 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{{app.config.name}}</title>
-        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css" />
-        <!--[if lt IE 9]>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.min.css" />
-        <![endif]-->
-    </head>
-    <body>
-    <div class="github-fork-ribbon-wrapper right">
-        <div class="github-fork-ribbon">
-            <a href="https://github.com/pygillier/chert">Fork me on GitHub</a>
+{% extends 'base.twig' %}
+{% block content %}
+    <div class="col c1">&nbsp;</div>
+    <div class="col c10">
+        <div class="msg">
+            <strong>Yeah !</strong><br/>
+            Your link <em>{{link.url}}</em> has been minified to <a href="{{path('show', {'hash':hash})}}">{{url('show', {'hash' : hash})}}</a>.
         </div>
     </div>
-        <nav class="nav" tabindex="-1" onclick="this.focus()">
-            <div class="container">
-                <a class="pagename current" href="{{ path('home') }}">{{app.config.name}}</a>
-            </div>
-        </nav>
-        <article class="row">
-            <div class="col c1">&nbsp;</div>
-            <div class="col c10">
-                <div class="msg">
-	                <strong>Yeah !</strong><br/>
-	                Your link <em>{{link.url}}</em> has been minified to <a href="{{path('show', {'hash':hash})}}">{{url('show', {'hash' : hash})}}</a>.
-                </div>
-            </div>
-        </article>
-    </body>
-</html>
+{% endblock content %}

@@ -1,37 +1,17 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{{app.config.name}}</title>
-        <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css" />
-        <!--[if lt IE 9]>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.min.css" />
-        <![endif]-->
-        <style type="text/css">
-            form { text-align: center; padding-top:4em; }
-            input#link_url { width: 100%; }
-            button#link_submit { margin-top: 1em;}
-            label { display: none;  visibility: hidden; }
-        </style>
-    </head>
-    <body>
-        <div class="github-fork-ribbon-wrapper right">
-            <div class="github-fork-ribbon">
-                <a href="https://github.com/pygillier/chert">Fork me on GitHub</a>
-            </div>
-        </div>
-        <nav class="nav" tabindex="-1" onclick="this.focus()">
-            <div class="container">
-                <a class="pagename current" href="{{ path('home') }}">{{app.config.name}}</a>
-            </div>
-        </nav>
-        <article class="row">
-            <div class="col c2">&nbsp;</div>
-            <div class="col c8">
-                <form method="POST" action="{{path('send_url')}}">
-                    {{ form_widget(form) }}
-                </form>
-            </div>
-        </article>
-    </body>
-</html>
+{% extends 'base.twig' %}
+{% block css %}
+<style type="text/css">
+    form { text-align: center; padding-top:4em; }
+    input#link_url { width: 100%; }
+    button#link_submit { margin-top: 1em;}
+    label { display: none;  visibility: hidden; }
+</style>
+{% endblock css %}
+{% block content %}
+    <div class="col c2">&nbsp;</div>
+    <div class="col c8">
+        <form method="POST" action="{{path('send_url')}}">
+            {{ form_widget(form) }}
+        </form>
+    </div>
+{% endblock content %}

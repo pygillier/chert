@@ -65,9 +65,11 @@ class Application extends BaseApplication
                                 $message = 'The requested page could not be found.';
                                 break;
                                 default:
-                                $message = 'An error occured.';
+                                $message = $e->getMessage();
                         }
-                        return new Response($message);
+                        return $this['twig']->render('error.twig', array(
+                            'message' => $message,
+                        ));
                     });
     }
     
@@ -90,7 +92,7 @@ class Application extends BaseApplication
         $this->register(new TwigServiceProvider(), array(
             'twig.path' => __DIR__.'/../views',
             'twig.options'    => array(
-                'cache' => __DIR__ . '/../app/cache',
+                'cache' => $this['config']['twig_cache'] ?__DIR__ . '/../app/cache': false,
             ),
         ));
         
