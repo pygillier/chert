@@ -2,7 +2,19 @@
 
 namespace pygillier\Chert;
 
+use Igorw\Silex\ConfigServiceProvider;
+use Igorw\Silex\YamlConfigDriver;
+use Monolog\Logger;
 use Silex\Application as BaseApplication;
+use Silex\Provider\DoctrineServiceProvider;
+use Silex\Provider\FormServiceProvider;
+use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
+use Whoops\Provider\Silex\WhoopsServiceProvider;
 
 class Application extends BaseApplication
 {
@@ -15,12 +27,12 @@ class Application extends BaseApplication
         // Load configuration
         try 
         {
-            $this->register(new \Igorw\Silex\ConfigServiceProvider(
+            $this->register(new ConfigServiceProvider(
                         __DIR__.'/../app/settings.yml',
                         array(
                             'base_dir' => realpath(__DIR__.'/../')
                         ),
-                        new \Igorw\Silex\YamlConfigDriver(),
+                        new YamlConfigDriver(),
                         'config'
             ));
         }
@@ -37,7 +49,7 @@ class Application extends BaseApplication
         // Debug providers
         if($this['debug'] === true)
         {
-            $this->register(new \Whoops\Provider\Silex\WhoopsServiceProvider());
+            $this->register(new WhoopsServiceProvider());
             $this->register(new \Sorien\Provider\PimpleDumpProvider());
         }
         
@@ -55,27 +67,27 @@ class Application extends BaseApplication
                                 default:
                                 $message = 'An error occured.';
                         }
-                        return new \Symfony\Component\HttpFoundation\Response($message);
+                        return new Response($message);
                     });
     }
     
     private function initProviders()
     {
-        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        $this->register(new UrlGeneratorServiceProvider());
         
         // Forms
-        $this->register(new \Silex\Provider\ValidatorServiceProvider());
-        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
+        $this->register(new ValidatorServiceProvider());
+        $this->register(new TranslationServiceProvider(), array(
             'translator.messages' => array(),
         ));
-        $this->register(new \Silex\Provider\FormServiceProvider());
+        $this->register(new FormServiceProvider());
         
         // Doctrine
-        $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+        $this->register(new DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
         // Twig
-        $this->register(new \Silex\Provider\TwigServiceProvider(), array(
+        $this->register(new TwigServiceProvider(), array(
             'twig.path' => __DIR__.'/../views',
             'twig.options'    => array(
                 'cache' => __DIR__ . '/../app/cache',
@@ -83,9 +95,9 @@ class Application extends BaseApplication
         ));
         
         // Monolog
-        $this->register(new \Silex\Provider\MonologServiceProvider(), array(
+        $this->register(new MonologServiceProvider(), array(
             'monolog.logfile'   => __DIR__.'/../app/logs/service.log',
-            'monolog.level'     => \Monolog\Logger::INFO,
+            'monolog.level'     => Logger::INFO,
             'monolog.name'      => 'chert'
         ));
         
@@ -95,7 +107,7 @@ class Application extends BaseApplication
         });
 
         $this['chert'] = $this->share(function($this){
-            return new Service\ChertMinifyService($this['db'], $this['hash_service'], $this['validator']);
+            return new Service\ChertMinifyService($this['db'], $this['hash_service']);
         });
     }
 }
