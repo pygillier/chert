@@ -4,6 +4,10 @@
 	"type" : "project",
 	"license" : "MIT",
 
+    "config" : {
+      "preferred-install" : "dist"
+    },
+
 	"authors": [
 		{
 			"name" : "Pierre-Yves Gillier",
