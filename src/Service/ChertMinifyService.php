@@ -28,28 +28,17 @@ class ChertMinifyService
     }
     
     /**
-     * Store and save provided link in database
+     * Store provided link in database
      *
      * @param string $link The link to save
      * @return string Link's associated hash
      */
     public function minify($link)
     {
-		// Validation 
-		$errors = $this->validator_service->validateValue($link, new Assert\Url());
-		
-		if(count($errors) == 0)
-		{
 			$this->cnx->insert('url', array( 'url' => $link));
         	$id = $this->cnx->lastInsertId();
         
         	return $this->hash_service->getHash($id);	
-		}
-		else
-		{
-			throw new Exception("Given link is invalid".(string) $errors);
-		}
-        
     }
 
 	/**
