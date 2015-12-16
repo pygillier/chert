@@ -4,7 +4,6 @@ namespace pygillier\Chert\Service;
 
 use pygillier\Chert\Exception;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class ChertMinifyService
 {
@@ -17,14 +16,12 @@ class ChertMinifyService
 	 * @var HashService
      */
 	private $hash_service;
-	
-	private $validator_service;
+
     
-    public function __construct(Connection $cnx, HashService $hash_service, $validator_service)
+    public function __construct(Connection $cnx, HashService $hash_service)
     {
         $this->cnx= $cnx;
         $this->hash_service = $hash_service;
-		$this->validator_service = $validator_service;
     }
     
     /**
