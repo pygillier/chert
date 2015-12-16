@@ -1,10 +1,11 @@
 <?php
 namespace pygillier\Chert\Provider;
 
+use pygillier\Chert\Exception;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
+
 
 class ControllerProvider implements ControllerProviderInterface
 {
@@ -29,7 +30,7 @@ class ControllerProvider implements ControllerProviderInterface
             ->get('/{hash}', "\\pygillier\\Chert\\Provider\\ControllerProvider::showAction")
             ->bind('show');
 
-        return $controllers;
+		return $controllers;
     }
     
     /** 
@@ -37,47 +38,68 @@ class ControllerProvider implements ControllerProviderInterface
      */
     public function indexAction(Application $app) 
     {
-        return $app['twig']->render('index.twig');
+		$form = $app['form.factory']->createBuilder('\pygillier\Chert\Form\LinkType')
+        	->getForm();
+		
+        return $app['twig']->render('index.twig', array(
+			'form' => $form->createView()
+		));
     }
     
     public function minifyAction(Application $app, Request $request)
     {
-	    $url = $request->get('url');
-
-    	// Validate given URL
-    	if( count($app['validator']->validateValue($url, new Assert\Url())) == 0)
-	    {
-
-		    $hash = $app['chert']->minify($url);
-			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));
-	    }
-	    else 
-		    throw new \Exception("Invalid URL provided: ${url}");
+	    $form = $app['form.factory']->createBuilder('\pygillier\Chert\Form\LinkType')
+        	->getForm();
+		
+		$form->handleRequest($request);
+		
+		if($form->isValid())
+		{
+			$data = $form->getData();
+			$hash = $app['chert']->minify($data['url']);
+			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));	
+		}
+		else
+		{
+			$app['session']->getFlashBag()->add("Provided link is invalid");
+			return $app->redirect($app["url_generator"]->generate("home"));
+		}
     }
     
-    public function statusAction(Application $app, $key)
+    public function statusAction(Application $app, Request $request, $key)
     {
-        // Status is available in debug mode only.
+		// Status is available in debug mode only.
         if(!$app['config']['show_status'] || $key != $app['config']['status_key'])
-            throw new \Exception("Unauthorized access");
+		{
+			$app['monolog']->addAlert("Unauthorized access to status page");
+			throw new Exception("Unauthorized access to status page");
+		}
+            
 
-		
-
+        $offset = $request->get('page', 0);
+        $limit = $app['config']['status_links_per_page'];
         // DB access
         try
         {
-            $count = $app['chert']->countLinks();
+			$links = $app['chert']->getListing($offset, $limit);
+			
+			// Add hashes to liste
+			$links = array_map(function($item) use ($app) {
+				$item['hash'] = $app['hash_service']->getHash($item['id']);
+				return $item;
+			}, $links);
 
-            $output = sprintf("Database (%s) access OK: %s entries", $app['db']->getDatabasePlatform()->getName(), $count);
+			return $app['twig']->render('status.twig', array(
+				'count' => $app['chert']->countLinks(),
+				'links' => $links,
+			));
         }
         catch(\PDOException $err)
         {
-            $output .= '<span style="color: red; font-weight: bold">Database error !</span> '.$err->getMessage();
+			$app['monolog']->addError("Error while retrieving listing (offset: ${offset}, limit: ${limit}) :".$err->getMessage());
+            throw new Exception("An error occured during processing.".$err->getMessage());
         }
-		return $app['twig']->render('status.twig', array(
-			'count' => $count,
-			'links' => $app['chert']->getAll(true),
-		));
+
     }
 	
 	public function doneAction(Application $app, $hash)

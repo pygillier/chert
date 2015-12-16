@@ -34,23 +34,16 @@ class Application extends BaseApplication
         
         $this->initProviders();
         
-        // Services
-        $this['hash_service'] = $this->share(function($this){
-           return new Service\HashService($this['config']['use_simple_cipher']); 
-        });
-
-        $this['chert'] = $this->share(function($this){
-            return new Service\ChertMinifyService($this['db'], $this['hash_service']);
-        });
-        
         // Debug providers
         if($this['debug'] === true)
         {
             $this->register(new \Whoops\Provider\Silex\WhoopsServiceProvider());
+            $this->register(new \Sorien\Provider\PimpleDumpProvider());
         }
         
         // Controllers
         $this->mount("/", new Provider\ControllerProvider());
+        $this->mount("/v1", new Provider\ApiProvider());
         
         // Error handler
         $this->error(function (\Exception $e, $code) 
@@ -69,16 +62,40 @@ class Application extends BaseApplication
     private function initProviders()
     {
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        
+        // Forms
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
+            'translator.messages' => array(),
+        ));
         $this->register(new \Silex\Provider\FormServiceProvider());
+        
+        // Doctrine
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
+        // Twig
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.path' => __DIR__.'/../views',
             'twig.options'    => array(
                 'cache' => __DIR__ . '/../app/cache',
             ),
         ));
+        
+        // Monolog
+        $this->register(new \Silex\Provider\MonologServiceProvider(), array(
+            'monolog.logfile'   => __DIR__.'/../app/logs/service.log',
+            'monolog.level'     => \Monolog\Logger::INFO,
+            'monolog.name'      => 'chert'
+        ));
+        
+        // Services
+        $this['hash_service'] = $this->share(function($this){
+           return new Service\HashService($this['config']['use_simple_cipher']); 
+        });
+
+        $this['chert'] = $this->share(function($this){
+            return new Service\ChertMinifyService($this['db'], $this['hash_service'], $this['validator']);
+        });
     }
 }

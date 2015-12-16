@@ -3,11 +3,17 @@
     <head>
         <title>{{app.config.name}}</title>
         <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
-		{% if app.config.auto_redirect %}
-		<meta http-equiv="refresh" content="{{app.config.auto_redirect.timer|default(10)}}; url={{link}}">
-		{% endif %}
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css" />
+        <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.min.css" />
+        <![endif]-->
     </head>
     <body>
+        <div class="github-fork-ribbon-wrapper right">
+            <div class="github-fork-ribbon">
+                <a href="https://github.com/pygillier/chert">Fork me on GitHub</a>
+            </div>
+        </div>
         <nav class="nav" tabindex="-1" onclick="this.focus()">
             <div class="container">
                 <a class="pagename current" href="{{ path('home') }}">{{app.config.name}}</a>

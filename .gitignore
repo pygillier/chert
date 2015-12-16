@@ -7,3 +7,8 @@ Vagrantfile
 .vagrant/
 app/cache/
 app/settings.yml
+pimple.json
+app/logs/*.log
+_build
+_static
+_templates

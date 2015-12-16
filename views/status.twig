@@ -4,9 +4,15 @@
         <title>{{app.config.name}}</title>
         <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/css/min.min.css"/>
         <style type="text/css">
-            dl {
-                background-color:#D9DADB;
-                margin: .2em; padding: 0.2em;
+            table {
+                table-layout: fixed;
+                width: 100px;
+            }
+            .truncate{
+                width: 50px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         </style>
     </head>
@@ -22,18 +28,24 @@
                 <div class="msg">
 	                {{count}} links stored in application.
                 </div>
-                <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>LongURL</th>
+                            <th>Created at</th>
+                            <th>ShortUrl</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {% for link in links %}
-                    <div class="col c3">
-                        <dl>
-                            <dt>Source</dt>
-                            <dd><a href="{{link.url}}">{{link.url}}</a></dd>
-                            <dt>Short link</dt>
-                            <dd><a href="{{url('show', {'hash' : link.hash})}}">{{link.hash}}</a></dd>
-                        </dl>
-                    </div>
-                    {% endfor %}    
-                </div>
+                        <tr>
+                            <td class="truncate"><a href="{{link.url}}">{{link.url}}</a></td>
+                            <td>{{ link.created_at|date }}</td>
+                            <td class="truncate"><a href="{{url('show', {'hash' : link.hash})}}">{{url('show', {'hash' : link.hash})}}</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </article>
     </body>

@@ -30,6 +30,7 @@ auto_redirect:	false
 # Be careful as db type is displayed!
 show_status:	false
 status_key :    chertstatuskey
+status_links_per_page: 10
 
 # Use simple alphabet for hashes
 # Letters "Il10O" and some others won't be used
