@@ -37,18 +37,28 @@ class ControllerProvider implements ControllerProviderInterface
      */
     public function indexAction(Application $app) 
     {
-        return $app['twig']->render('index.twig');
+		$form = $app['form.factory']->createBuilder('\pygillier\Chert\Form\LinkType')
+        	->getForm();
+		
+        return $app['twig']->render('index.twig', array(
+			'form' => $form->createView()
+		));
     }
     
     public function minifyAction(Application $app, Request $request)
     {
-	    $url = $request->get('url');
-
-    	try {
-			$hash = $app['chert']->minify($url);
+	    $form = $app['form.factory']->createBuilder('\pygillier\Chert\Form\LinkType')
+        	->getForm();
+		
+		$form->handleRequest($request);
+		
+		if($form->isValid())
+		{
+			$data = $form->getData();
+			$hash = $app['chert']->minify($data['url']);
 			return $app->redirect($app["url_generator"]->generate("done", array('hash' => $hash)));	
 		}
-    	catch(Exception $e)
+		else
 		{
 			$app['session']->getFlashBag()->add("Provided link is invalid");
 			return $app->redirect($app["url_generator"]->generate("home"));

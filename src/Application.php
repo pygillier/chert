@@ -62,17 +62,27 @@ class Application extends BaseApplication
     private function initProviders()
     {
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        
+        // Forms
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
+            'translator.messages' => array(),
+        ));
         $this->register(new \Silex\Provider\FormServiceProvider());
+        
+        // Doctrine
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
+        // Twig
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.path' => __DIR__.'/../views',
             'twig.options'    => array(
                 'cache' => __DIR__ . '/../app/cache',
             ),
         ));
+        
+        // Monolog
         $this->register(new \Silex\Provider\MonologServiceProvider(), array(
             'monolog.logfile'   => __DIR__.'/../app/logs/service.log',
             'monolog.level'     => \Monolog\Logger::INFO,

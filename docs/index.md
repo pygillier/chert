@@ -20,6 +20,12 @@ On your server, using [composer](https://getcomposer.org), type the following :
     
 Installation process will download Chert and all required dependencies and install them in `chert` subfolder. Default `settings.yml` will also be generated.
 
+Table of Content
+----------------
+`` `eval_rst
+.. toctree::
+`` `
+
 Contribute
 ----------
 

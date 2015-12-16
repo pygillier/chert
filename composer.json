@@ -26,7 +26,9 @@
 		"symfony/twig-bridge": "^3.0",
 		"symfony/form": "^3.0",
 		"symfony/security-csrf": "^3.0",
-		"monolog/monolog": "^1.17"
+		"monolog/monolog": "^1.17",
+		"symfony/translation": "^3.0",
+		"symfony/config": "^3.0"
 
     },
 	"require-dev": {
